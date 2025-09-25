@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -O2
-LFLAGS=-lpthread
+LFLAGS=-lpthread -lncurses
 
 SRC=src
 OUT=out
