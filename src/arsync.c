@@ -20,7 +20,7 @@ void *worker(void *x) {
     int curr = counter++;
     sem_post(sem);
     snprintf(statuses[*((int *)x)].msg, sizeof(statuses[0].msg),
-             "Copying '%s'...\n", args[curr]);
+             "Copying '%s'\n", args[curr]);
     pid_t pid = fork();
     if (pid) {
       int status;
@@ -70,11 +70,15 @@ int main(int argc, char *argv[]) {
   while (threads_running) {
     threads_running = 0;
     for (int i = 0; i < NUM_THREADS; i++) {
+      move(i, 0);
+      clrtoeol();
       mvprintw(i, 0, "%s", statuses[i].msg);
       threads_running |= !thread_done[i];
     }
+    move(NUM_THREADS, 0);
+    clrtoeol();
     refresh();
-    usleep(50000); // 50ms delay in updates
+    usleep(150000); // 50ms delay in updates
   }
   for (int i = 0; i < NUM_THREADS; i++)
     pthread_join(threads[i], NULL);
